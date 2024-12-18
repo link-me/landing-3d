@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>3D Landing — Three.js + WebGL</title>
+    <style>
+      html, body { height: 100%; margin: 0; }
+      body { background: #0e0f12; color: #e8e8ea; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+      #app { position: fixed; inset: 0; }
+      canvas { display: block; }
+      .ui { position: fixed; left: 24px; bottom: 24px; z-index: 20; display: flex; gap: 12px; align-items: center; }
+      .cta { position: fixed; top: 24px; right: 24px; z-index: 20; display: flex; gap: 12px; align-items: center; }
+      .btn { background: #1f2430; border: 1px solid #2d3240; color: #e8e8ea; padding: 10px 14px; border-radius: 8px; cursor: pointer; }
+      .btn:hover { background: #262c3a; }
+      .badge { background: #19202c; border: 1px solid #2a3140; padding: 8px 12px; border-radius: 999px; font-size: 12px; }
+      .footer { position: fixed; left: 24px; top: 24px; z-index: 20; opacity: 0.8; font-size: 12px; }
+      .section { position: relative; z-index: 10; margin-top: 100vh; padding: 64px 24px; max-width: 900px; }
+      .section h2 { margin: 0 0 12px; }
+      .section p { margin: 0 0 10px; line-height: 1.6; }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <div class="footer">Stack: Three.js + WebGL</div>
+    <div class="cta">
+      <button class="btn" id="theme">Тема</button>
+      <button class="btn" id="cta">Перейти к разделу</button>
+    </div>
+    <div class="ui">
+      <span class="badge" id="fps">FPS: --</span>
+      <span class="badge" id="objects">Objects: --</span>
+    </div>
+    <div class="section" id="info">
+      <h2>О проекте</h2>
+      <p>Интерактивный 3D лендинг на базе Three.js. Демонстрация базовой сцены, анимаций, орбитальных контролов,
+      адаптивности и простых UX-элементов. Реализована поддержка смены темы, подсчёт FPS и лёгкий параллакс при прокрутке.</p>
+      <p>Код организован в виде небольшого модуля, подходящего для реального лендинга или промо-страницы.</p>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+  </html>
