@@ -6,36 +6,91 @@
     <title>3D Landing — Three.js + WebGL</title>
     <style>
       html, body { height: 100%; margin: 0; }
-      body { background: #0e0f12; color: #e8e8ea; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+      body { background: #0b0f0a; color: #e6f6e6; font-family: JetBrains Mono, Menlo, Consolas, monospace; }
       #app { position: fixed; inset: 0; }
       canvas { display: block; }
+      /* Matrix canvas overlay */
+      #matrix { position: fixed; inset: 0; z-index: 5; pointer-events: none; opacity: 0; transition: opacity 200ms ease; }
       .ui { position: fixed; left: 24px; bottom: 24px; z-index: 20; display: flex; gap: 12px; align-items: center; }
       .cta { position: fixed; top: 24px; right: 24px; z-index: 20; display: flex; gap: 12px; align-items: center; }
-      .btn { background: #1f2430; border: 1px solid #2d3240; color: #e8e8ea; padding: 10px 14px; border-radius: 8px; cursor: pointer; }
-      .btn:hover { background: #262c3a; }
-      .badge { background: #19202c; border: 1px solid #2a3140; padding: 8px 12px; border-radius: 999px; font-size: 12px; }
-      .footer { position: fixed; left: 24px; top: 24px; z-index: 20; opacity: 0.8; font-size: 12px; }
+      .btn { background: #111713; border: 1px solid #1b241e; color: #a5ffcf; padding: 10px 14px; border-radius: 6px; cursor: pointer; }
+      .btn:hover { background: #132018; }
+      .badge { background: #0d140f; border: 1px solid #1a241e; padding: 6px 10px; border-radius: 4px; font-size: 12px; color: #88e8b1; }
+      .footer { position: fixed; left: 24px; top: 24px; z-index: 20; opacity: 0.85; font-size: 12px; color: #67d69a; }
       .section { position: relative; z-index: 10; margin-top: 100vh; padding: 64px 24px; max-width: 900px; }
       .section h2 { margin: 0 0 12px; }
       .section p { margin: 0 0 10px; line-height: 1.6; }
+      /* Admin log */
+      .log { position: fixed; right: 24px; bottom: 24px; width: 28vw; min-width: 280px; max-width: 520px; height: 22vh; z-index: 20; background: #0b120d; border: 1px solid #1a241e; border-radius: 6px; overflow: auto; padding: 10px; }
+      .log pre { margin: 0; font-size: 12px; color: #a5ffcf; }
+      /* Admin form (restored) */
+      .admin-form { margin-top: 20px; padding: 16px; border: 1px solid #1a241e; border-radius: 8px; background: linear-gradient(180deg,#0c1310 0%, #0b120d 100%); box-shadow: 0 10px 24px rgba(0,255,149,0.06); }
+      .admin-form h3 { margin: 0 0 10px; color: #67d69a; font-weight: 600; letter-spacing: 0.4px; }
+      .admin-form .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 10px; }
+      .admin-form label { display: block; font-size: 12px; color: #88e8b1; margin-bottom: 6px; }
+      .admin-form input, .admin-form select, .admin-form textarea { width: 100%; padding: 10px 12px; border-radius: 999px; border: 1px solid #1b241e; background: linear-gradient(180deg,#0e1511 0%, #0d140f 100%); color: #a5ffcf; outline: none; box-shadow: inset 0 0 0 1px rgba(0,255,149,0.08), 0 8px 18px rgba(0,255,149,0.05); }
+      .admin-form textarea { border-radius: 12px; min-height: 90px; resize: vertical; }
+      .admin-form .actions { display: flex; align-items: center; gap: 12px; margin-top: 8px; }
+      .admin-form button { background: linear-gradient(180deg,#0f1a14 0%, #112019 100%); border: 1px solid #163425; color: #a5ffcf; padding: 10px 16px; border-radius: 999px; cursor: pointer; box-shadow: 0 8px 18px rgba(0,255,149,0.08); }
+      .admin-form button:hover { background: linear-gradient(180deg,#112019 0%, #13261f 100%); }
+      .admin-form .status { font-size: 12px; color: #88e8b1; }
     </style>
   </head>
   <body>
+    <canvas id="matrix"></canvas>
     <div id="app"></div>
     <div class="footer">Stack: Three.js + WebGL</div>
     <div class="cta">
-      <button class="btn" id="theme">Тема</button>
+      <button class="btn" id="matrixBtn">Matrix</button>
       <button class="btn" id="cta">Перейти к разделу</button>
     </div>
     <div class="ui">
       <span class="badge" id="fps">FPS: --</span>
       <span class="badge" id="objects">Objects: --</span>
     </div>
+    <div class="log"><pre id="log"></pre></div>
     <div class="section" id="info">
       <h2>О проекте</h2>
       <p>Интерактивный 3D лендинг на базе Three.js. Демонстрация базовой сцены, анимаций, орбитальных контролов,
       адаптивности и простых UX-элементов. Реализована поддержка смены темы, подсчёт FPS и лёгкий параллакс при прокрутке.</p>
       <p>Код организован в виде небольшого модуля, подходящего для реального лендинга или промо-страницы.</p>
+
+      <form id="admin-form" class="admin-form" aria-label="Admin programmer contact">
+        <h3>Contact</h3>
+        <div class="row">
+          <div>
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" placeholder="Neo" required />
+          </div>
+          <div>
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="neo@matrix.io" required />
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label for="role">Role</label>
+            <select id="role" name="role" required>
+              <option value="">Select role…</option>
+              <option>Developer</option>
+              <option>Admin</option>
+              <option>Operator</option>
+            </select>
+          </div>
+          <div>
+            <label for="access">Access Key</label>
+            <input id="access" name="access" type="password" placeholder="••••••" required />
+          </div>
+        </div>
+        <div>
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Enter your request or system notes" required></textarea>
+        </div>
+        <div class="actions">
+          <button type="submit">Submit</button>
+          <span class="status" id="form-status"></span>
+        </div>
+      </form>
     </div>
 
     <script type="module" src="/src/main.js"></script>
