@@ -1,5 +1,6 @@
-﻿# Changelog
+# Changelog
 
+- Unreleased: Update README/ROADMAP to document orbit and impulse collisions; strict-orbit correction.
 - 2025-08-19: Add tests
 - 2025-08-23: Code cleanup
 - 2025-08-29: Fix auth bug
