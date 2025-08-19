@@ -1,0 +1,12 @@
+﻿# Changelog
+
+- 2025-08-19: Add tests
+- 2025-08-23: Code cleanup
+- 2025-08-29: Fix auth bug
+- 2025-08-31: Code cleanup
+- 2025-09-04: Add tests
+- 2025-09-04: Update docs
+- 2025-09-04: Enhance logging
+- 2025-09-13: Add feature
+- 2025-09-20: Code cleanup
+- 2025-10-01: Update dependencies
