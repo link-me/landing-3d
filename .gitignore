@@ -1,4 +1,7 @@
-﻿node_modules/
+node_modules/
+.cache/
+dist/
+.vite/
 .venv/
 venv/
 __pycache__/
@@ -8,4 +11,7 @@ bin/
 .DS_Store
 Thumbs.db
 *.log
+
+# локальные файлы
+PRIVATE_USAGE.txt
 
