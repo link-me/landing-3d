@@ -16,3 +16,4 @@
 - 2025-09-11: Add feature
 - 2025-09-13: Improve performance
 - 2025-09-23: Update dependencies
+- 2025-09-23: Code cleanup
