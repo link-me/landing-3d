@@ -18,3 +18,4 @@
 - 2025-09-23: Update dependencies
 - 2025-09-23: Code cleanup
 - 2025-09-26: Add tests
+- 2025-09-30: Add feature
